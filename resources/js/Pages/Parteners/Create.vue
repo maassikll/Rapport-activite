@@ -2,12 +2,12 @@
     <head title="Create" />
     <AuthenticatedLayout>
         <template #header>
-            Ajouter un client
+            Ajouter un partenere
         </template>
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="name" value="Nom client" />
+                <InputLabel for="name" value="Nom partener" />
                 <TextInput id="name" type="text" class="mt-1 block w-full" v-model="form.name" required autofocus autocomplete="name" />
                 <InputError class="mt-2" :message="form.errors.name" />
             </div>
@@ -61,7 +61,7 @@ import TextInput from '@/Components/TextInput.vue';
 
 
 const props = defineProps({
-    clients: Object
+    parteners: Object
 })
 
 const form = useForm({
@@ -76,7 +76,7 @@ const form = useForm({
 
 
 const submit = () => {
-    form.post(route('clients.store'), {
+    form.post(route('parteners.store'), {
         onFinish: () => form.reset('email','numero_siret')}
     );
 };

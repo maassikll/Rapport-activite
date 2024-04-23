@@ -1,9 +1,9 @@
 <template>
-    <Head title="Clients" />
+    <Head title="Parteneres" />
 
     <AuthenticatedLayout>
         <template #header>
-            Clients
+            Parteners
         </template>
 
         <div class="mb-4 inline-flex w-full overflow-hidden rounded-lg bg-white shadow-md">
@@ -16,14 +16,14 @@
     
             <div class="-mx-3 px-4 py-2">
                 <div class="mx-3">
-                    <span class="font-semibold text-blue-500">Clients Info</span>
+                    <span class="font-semibold text-blue-500">Parteneres Info</span>
                     <p class="text-sm text-gray-600">Sample table page</p>
                 </div>
             </div>
         </div>
         
         <div class="flex justify-end">
-            <LinkButton :href="route('clients.create')" :active="route().current('clients.create')">Create</LinkButton>
+            <LinkButton :href="route('parteners.create')" :active="route().current('parteners.create')">Create</LinkButton>
         </div>
 
         
@@ -34,7 +34,7 @@
                 <thead>
                     <tr class="border-b bg-gray-50 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
                         <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
-                            Nom client
+                            Nom partenere
                         </th>
                         <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
                             Email
@@ -48,25 +48,25 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="client in clients.data" :key="client.id" class="text-gray-700">
+                    <tr v-for="partener in parteners.data" :key="parteners.id" class="text-gray-700">
                         <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                            <p class="text-gray-900 whitespace-no-wrap">{{ client.name }}</p>
+                            <p class="text-gray-900 whitespace-no-wrap">{{ partener.name }}</p>
                         </td>
                         <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                            <p class="text-gray-900 whitespace-no-wrap">{{ client.email }}</p>
+                            <p class="text-gray-900 whitespace-no-wrap">{{ partener.email }}</p>
                         </td>
                         <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                            <p class="text-gray-900 whitespace-no-wrap">{{ client.phone_number }}</p>
+                            <p class="text-gray-900 whitespace-no-wrap">{{ partener.phone_number }}</p>
                         </td>
                         <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                            <p class="text-gray-900 whitespace-no-wrap">{{ client.numero_siret }}</p>
+                            <p class="text-gray-900 whitespace-no-wrap">{{ partener.numero_siret }}</p>
                         </td>
                     </tr>
                 </tbody>
             </table>
 
             <div class="flex flex-col items-center border-t bg-white px-5 py-5 xs:flex-row xs:justify-between">
-                <pagination :links="clients.links" />
+                <pagination :links="parteners.links" />
             </div>
         </div>
     </AuthenticatedLayout>
@@ -81,7 +81,7 @@ import { Head } from '@inertiajs/vue3';
 import LinkButton from '@/Components/LinkButton.vue';
 
 const props = defineProps({
-    clients: Object
+    parteners: Object
 })
 
 
