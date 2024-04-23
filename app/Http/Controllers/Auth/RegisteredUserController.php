@@ -16,6 +16,13 @@ use Inertia\Response;
 
 class RegisteredUserController extends Controller
 {
+
+    private $matricule;
+
+    public function __construct()
+    {
+        $this->matricule = rand(100000, 900000);
+    }
     /**
      * Display the registration view.
      */
@@ -23,6 +30,7 @@ class RegisteredUserController extends Controller
     {
         return Inertia::render('Auth/Register');
     }
+
 
     /**
      * Handle an incoming registration request.
@@ -39,12 +47,15 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+
+
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'phone_number' => $request->phone_number,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'matricule' =>$this->matricule,
         ]);
 
         event(new Registered($user));

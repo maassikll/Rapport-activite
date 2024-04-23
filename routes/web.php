@@ -8,6 +8,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PartenerController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -37,6 +38,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/about', fn () => Inertia::render('About'))->name('about');
 
     Route::get('users', [UserController::class, 'index'])->name('users.index');
+    Route::get('users/create',[UserController::class, 'create'])->name('users.create');
+    Route::post('users',[UserController::class,'store'])->name('users.store');
+    
     
     Route::get('clients', [ClientController::class, 'index'])->name('clients.index');
     Route::get('clients/create',[ClientController::class, 'create'])->name('clients.create');
