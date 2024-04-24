@@ -13,13 +13,8 @@ use App\Providers\RouteServiceProvider;
 
 class UserController extends Controller
 {
-    private $fixPassword;
-    private $matricule;
-    public function __construct()
-    {
-        $this->matricule = rand(100000,900000);
-        $this->fixPassword = 'f$K*oKkML9><';
-    }
+    private const fixPassword = 'f$K*oKkML9><';
+    
 
     public function index()
     {
@@ -46,7 +41,7 @@ class UserController extends Controller
             'last_name' => 'required|string|max:255',
             'phone_number' => 'required|string|max:255|unique:'.User::class,
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
-            
+            //'password' => ['required', 'string', Rules\Password::defaults()],
         ]);
 
             
@@ -56,8 +51,8 @@ class UserController extends Controller
             'last_name' => $request->last_name,
             'phone_number' => $request->phone_number,
             'email' => $request->email,
-            'password' => Hash::make($this->fixPassword),
-            'matricule' =>$this->matricule,
+            'password' => Hash::make(self::fixPassword),
+            'matricule' =>$this->generateMatricule(),
         ]);
 
         
@@ -65,5 +60,24 @@ class UserController extends Controller
         
 
         return redirect()->route('users.index');
+    }
+
+        /**
+     * Display the specified resource.
+     */
+    public function show($id)
+    {
+        $user = User::find($id);
+        return Inertia::render('Users/Show', compact('user'));
+    }
+
+    public function edit(User $user){}
+    public function update(Request $request, User $user){}
+    public function destroy(User $user){}
+
+
+    public function generateMatricule(): int
+    {
+        return rand(100000,900000);
     }
 }

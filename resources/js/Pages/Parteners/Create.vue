@@ -31,6 +31,7 @@
                 <InputError class="mt-2" :message="form.errors.name" />
             </div>
 
+
             <div class="flex flex-row p-10">
                 <div class="basis-1/2"></div>
                 <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
@@ -68,9 +69,7 @@ const form = useForm({
     name: '',
     email: '',
     phone_number:'',
-    numero_siret:'',
-
-    
+    numero_siret:'',    
     
 });
 
@@ -80,5 +79,6 @@ const submit = () => {
         onFinish: () => form.reset('email','numero_siret')}
     );
 };
+
 
 </script>
