@@ -13,9 +13,13 @@ use App\Providers\RouteServiceProvider;
 
 class UserController extends Controller
 {
-    private const fixPassword = 'f$K*oKkML9><';
+    private  $fixPassword;
     
 
+    public function __construct()
+    {
+        $this->fixPassword ='f$K*oKkML9><';
+    }
     public function index()
     {
         return Inertia::render('Users/Index', [
@@ -51,7 +55,7 @@ class UserController extends Controller
             'last_name' => $request->last_name,
             'phone_number' => $request->phone_number,
             'email' => $request->email,
-            'password' => Hash::make(self::fixPassword),
+            'password' => Hash::make($this->fixPassword),
             'matricule' =>$this->generateMatricule(),
         ]);
 
@@ -73,7 +77,11 @@ class UserController extends Controller
 
     public function edit(User $user){}
     public function update(Request $request, User $user){}
-    public function destroy(User $user){}
+    public function destroy(User $user){
+        $user->delete();
+        return to_route('users.index');
+
+    }
 
 
     public function generateMatricule(): int

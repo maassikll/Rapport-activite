@@ -2,7 +2,7 @@
     <head title="Create" />
     <AuthenticatedLayout>
         <template #header>
-            Ajouter un employer
+            <BackButton :href="route('users.index')" ></BackButton>
         </template>
 
         <form @submit.prevent="submit">

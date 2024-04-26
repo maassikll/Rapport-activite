@@ -2,7 +2,7 @@
     <head title="Create" />
     <AuthenticatedLayout>
         <template #header>
-            Ajouter un partenere
+            <BackButton :href="route('parteners.index')" ></BackButton>
         </template>
 
         <form @submit.prevent="submit">
@@ -56,6 +56,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
+import BackButton from '@/Components/BackButton.vue';
 
 
 

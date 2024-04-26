@@ -63,8 +63,10 @@ class PartenerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Partener $partener)
-    {
-        //
+    public function destroy($id){
+        $partener = Partener::find($id);
+        $partener->delete();
+        return redirect()->route('parteners.index');
+
     }
 }

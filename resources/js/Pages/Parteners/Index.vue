@@ -3,8 +3,10 @@
 
     <AuthenticatedLayout>
         <template #header>
-            Parteners
+            <BackButton :href="route('dashboard')" ></BackButton>
         </template>
+
+        
 
         <div class="mb-4 inline-flex w-full overflow-hidden rounded-lg bg-white shadow-md">
             <div class="flex w-12 items-center justify-center bg-blue-500">
@@ -45,6 +47,10 @@
                         <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
                             Numéro SIRET
                         </th>
+
+                        <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
+                            
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -61,6 +67,14 @@
                         <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                             <p class="text-gray-900 whitespace-no-wrap">{{ partener.numero_siret }}</p>
                         </td>
+
+                        <td class="border-b border-gray-200 bg-white px-0 py-2 text-sm flex ">
+                            <LinkButton :href="route('parteners.show', { id: partener.id })" :active="route().current('parteners.show')">Show</LinkButton>
+                            <LinkButton :href="route('parteners.show', { id: partener.id })" :active="route().current('parteners.show')">Edit</LinkButton>
+                            <LinkButton :href="route('parteners.destroy',partener.id)"  method="DELETE">Delete</LinkButton>
+                   
+                        </td>
+
                         
                     </tr>
                 </tbody>
@@ -75,15 +89,18 @@
 
 
 <script setup>
-import { Link } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Pagination from '@/Components/Pagination.vue'
 import { Head } from '@inertiajs/vue3';
 import LinkButton from '@/Components/LinkButton.vue';
+import BackButton from '@/Components/BackButton.vue';
+
 
 const props = defineProps({
     parteners: Object
 })
+
+
 
 
 </script>

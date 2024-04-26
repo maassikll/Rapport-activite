@@ -3,8 +3,10 @@
 
     <AuthenticatedLayout>
         <template #header>
-            Liste employers
+            <BackButton :href="route('dashboard')" ></BackButton>
         </template>
+
+        
 
         <div class="mb-4 inline-flex w-full overflow-hidden rounded-lg bg-white shadow-md">
             <div class="flex w-12 items-center justify-center bg-blue-500">
@@ -22,14 +24,12 @@
             </div>
         </div>
 
+        
+
         <div class="flex justify-end">
             <LinkButton :href="route('users.create')" :active="route().current('users.create')">Create</LinkButton>
         </div>
 
-        
-        
-
-        
         <div class="inline-block min-w-full overflow-hidden rounded-lg shadow">
             <table class="w-full whitespace-no-wrap">
                 <thead>
@@ -46,7 +46,7 @@
                         <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
                             Numero Téléphone
                         </th>
-                        <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
+                        <th class="border-b-2 border-gray-200 bg-gray-100 px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
                             Matricule employer
                         </th>
                         <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
@@ -75,8 +75,11 @@
                         <td class="border-b border-gray-200 bg-white px-0 py-2 text-sm flex ">
                             <LinkButton :href="route('users.show', { id: user.id })" :active="route().current('users.show')">Show</LinkButton>
                             <LinkButton :href="route('users.show', { id: user.id })" :active="route().current('users.show')">Edit</LinkButton>
-                            <LinkButton :href="route('users.show', { id: user.id })" :active="route().current('users.show')">Delete</LinkButton>
+                            <LinkButton :href="route('users.destroy',user.id)"  method="DELETE">Delete</LinkButton>
+                   
                         </td>
+
+                           
 
 
 
@@ -96,6 +99,15 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Pagination from '@/Components/Pagination.vue'
 import { Head } from '@inertiajs/vue3';
 import LinkButton from '@/Components/LinkButton.vue';
+import BackButton from '@/Components/BackButton.vue';
+import { useForm  } from '@inertiajs/vue3';
+
+const form = useForm({});
+
+const deletePost = (id) => {
+    form.delete(`users/${id}`);
+};
+
 
 const props = defineProps({
     users: Object

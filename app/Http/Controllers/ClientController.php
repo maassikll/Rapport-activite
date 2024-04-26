@@ -31,7 +31,12 @@ class ClientController extends Controller
 
     public function edit(Client $client){}
     public function update(Request $request, Client $client){}
-    public function destroy(Client $client){}
+    public function destroy($id){
+        $client = Client::find($id);
+        $client->delete();
+        return redirect()->route('clients.index');
+
+    }
 
     public function show(Client $client){
         return Inertia::render('Clients/Show', [

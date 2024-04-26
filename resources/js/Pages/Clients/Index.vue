@@ -2,9 +2,12 @@
     <Head title="Clients" />
 
     <AuthenticatedLayout>
+        
         <template #header>
-            Clients
+            <BackButton :href="route('dashboard')" ></BackButton>    
         </template>
+
+        
 
         <div class="mb-4 inline-flex w-full overflow-hidden rounded-lg bg-white shadow-md">
             <div class="flex w-12 items-center justify-center bg-blue-500">
@@ -16,8 +19,8 @@
     
             <div class="-mx-3 px-4 py-2">
                 <div class="mx-3">
-                    <span class="font-semibold text-blue-500">Clients Info</span>
-                    <p class="text-sm text-gray-600">Sample table page</p>
+                    <span class="font-semibold text-blue-500">Clients Informations</span>
+                    <p class="text-sm text-gray-600">Accée admin et consultant</p>
                 </div>
             </div>
         </div>
@@ -45,6 +48,9 @@
                         <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
                             Numéro SIRET
                         </th>
+                        <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
+                            
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -60,6 +66,12 @@
                         </td>
                         <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                             <p class="text-gray-900 whitespace-no-wrap">{{ client.numero_siret }}</p>
+                        </td>
+                        <td class="border-b border-gray-200 bg-white px-0 py-2 text-sm flex ">
+                            <LinkButton :href="route('clients.show', { id: client.id })" :active="route().current('clients.show')">Show</LinkButton>
+                            <LinkButton :href="route('clients.show', { id: client.id })" :active="route().current('clients.show')">Edit</LinkButton>
+                            <LinkButton :href="route('clients.destroy',client.id)"  method="DELETE">Delete</LinkButton>
+                   
                         </td>
                     </tr>
                 </tbody>
@@ -79,6 +91,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Pagination from '@/Components/Pagination.vue'
 import { Head } from '@inertiajs/vue3';
 import LinkButton from '@/Components/LinkButton.vue';
+import BackButton from '@/Components/BackButton.vue';
 
 const props = defineProps({
     clients: Object
