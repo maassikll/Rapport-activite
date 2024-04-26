@@ -39,25 +39,35 @@ class PartenerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Partener $partener)
+    public function show($id)
     {
-        //
+        $partener = Partener::find($id);
+        return Inertia::render('Parteners/Show', compact('partener'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Partener $partener)
+    public function edit($id)
     {
-        //
+        $partener = Partener::find($id);
+        return Inertia::render('Parteners/Edit',compact('partener'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Partener $partener)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name'=> 'string|max:255',
+            'email'=> 'string|lowercase|email|max:255|unique:'.Partener::class,
+            'phone_number'=> 'string|max:255',
+            'numero_siret'=> 'numeric|between:100000,999999',
+        ]);
+        $partener = Partener::find($id);
+        $partener->update($request->all());
+        return redirect()->route('parteners.index');
     }
 
     /**

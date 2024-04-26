@@ -56,7 +56,9 @@ Route::middleware('auth')->group(function () {
     Route::get('parteners',[PartenerController::class,'index'])->name('parteners.index');
     Route::get('parteners/create',[PartenerController::class,'create'])->name('parteners.create');
     Route::post('parteners',[PartenerController::class,'store'])->name('parteners.store');
-    Route::get('parteners/{partener}',[PartenerController::class,'show'])->name('parteners.show');
+    Route::get('parteners/{id}',[PartenerController::class,'show'])->name('parteners.show');
+    Route::get('parteners/{partener}/edit',[PartenerController::class,'edit'])->name('parteners.edit');
+    Route::put('partener/{partener}',[PartenerController::class,'update'])->name('parteners.update');
     Route::delete('parteners/{id}', [PartenerController::class, 'destroy'])->name('parteners.destroy');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -34,9 +34,7 @@ defineProps({
                 </div>
 
 
-                <div class="p-6 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <DeleteUserForm class="max-w-xl" />
-                </div>
+                
             </div>
         </div>
     </AuthenticatedLayout>

@@ -70,7 +70,7 @@
 
                         <td class="border-b border-gray-200 bg-white px-0 py-2 text-sm flex ">
                             <LinkButton :href="route('parteners.show', { id: partener.id })" :active="route().current('parteners.show')">Show</LinkButton>
-                            <LinkButton :href="route('parteners.show', { id: partener.id })" :active="route().current('parteners.show')">Edit</LinkButton>
+                            <LinkButton :href="route('parteners.edit', { id: partener.id })" :active="route().current('parteners.edit')">Edit</LinkButton>
                             <LinkButton :href="route('parteners.destroy',partener.id)"  method="DELETE">Delete</LinkButton>
                    
                         </td>

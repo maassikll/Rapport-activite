@@ -67,7 +67,7 @@
                         <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                             <p class="text-gray-900 whitespace-no-wrap">{{ client.numero_siret }}</p>
                         </td>
-                        <td class="border-b border-gray-200 bg-white px-0 py-2 text-sm flex ">
+                        <td class="border-b border-gray-200 bg-white px-2 py-2 text-sm flex ">
                             <LinkButton :href="route('clients.show', { id: client.id })" :active="route().current('clients.show')">Show</LinkButton>
                             <LinkButton :href="route('clients.show', { id: client.id })" :active="route().current('clients.show')">Edit</LinkButton>
                             <LinkButton :href="route('clients.destroy',client.id)"  method="DELETE">Delete</LinkButton>
