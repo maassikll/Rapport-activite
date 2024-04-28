@@ -59,15 +59,10 @@ class PartenerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name'=> 'string|max:255',
-            'email'=> 'string|lowercase|email|max:255|unique:'.Partener::class,
-            'phone_number'=> 'string|max:255',
-            'numero_siret'=> 'numeric|between:100000,999999',
-        ]);
+        
         $partener = Partener::find($id);
         $partener->update($request->all());
-        return redirect()->route('parteners.index');
+        return redirect()->route('parteners.index')->with('messge','Partener mis a jour avec succée');
     }
 
     /**

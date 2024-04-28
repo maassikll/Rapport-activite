@@ -1,30 +1,70 @@
 <template>
-    <Head title="Show" />
+  <head title="Show" />
+  <AuthenticatedLayout>
+      <template #header>
+          <BackButton :href="route('parteners.index')" ></BackButton>
+      </template>
 
-<AuthenticatedLayout>
-    <template #header>
-        Detailes Partenere
-    </template>
-    <div>
-      <h1>Partener Details</h1>
-      <div>
-        <p><strong>First Name:</strong> {{ partener.name }}</p>
-        <p><strong>Last Name:</strong> {{ partener.email }}</p>
-        <p><strong>Email:</strong> {{ partener.phone_number }}</p>
-        <p><strong>Phone Number:</strong> {{ partener.numero_siret }}</p>
+      <div class="mb-4 inline-flex w-full overflow-hidden rounded-lg bg-white shadow-md">
+            <div class="flex w-12 items-center justify-center bg-blue-500">
+                <svg class="h-6 w-6 fill-current text-white" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M20 3.33331C10.8 3.33331 3.33337 10.8 3.33337 20C3.33337 29.2 10.8 36.6666 20 36.6666C29.2 36.6666 36.6667 29.2 36.6667 20C36.6667 10.8 29.2 3.33331 20 3.33331ZM21.6667 28.3333H18.3334V25H21.6667V28.3333ZM21.6667 21.6666H18.3334V11.6666H21.6667V21.6666Z"></path>
+                </svg>
+            </div>
+    
+            <div class="-mx-3 px-4 py-2">
+                <div class="mx-3">
+                    <span class="font-semibold text-blue-500">Partenere Information</span>
+                    <p class="text-sm text-gray-600">Affichage des detailes d'un partenere</p>
+                </div>
+            </div>
+        </div>
+
+      <div class="mt-8">
+          <div>
+              <InputLabel for="name" value="Nom partener" />
+              <span>{{ partener.name }}</span>
+          </div>
+
+          <div class="mt-3">
+              <InputLabel for="email" value="Email" />
+              <span>{{ partener.email }}</span>
+          </div>
+
+          <div class="mt-3">
+              <InputLabel for="phone_number" value="Numéro de téléphone" />
+              <span>{{ partener.phone_number }}</span>
+          </div>
+
+          <div class="mt-3">
+              <InputLabel for="numero_siret" value="Numéro de siret" />
+              <span>{{ partener.numero_siret }}</span>
+          </div>
+
+          <div class="mt-8 flex">
+              <LinkButton :href="route('parteners.edit', { id: partener.id })" :active="route().current('parteners.edit')">Edit</LinkButton>
+              <LinkButton @click="deletePartener" :href="route('parteners.destroy', { id: partener.id })" method="DELETE">Delete</LinkButton>
+          </div>
       </div>
-    </div>
-</AuthenticatedLayout>
-  </template>
 
+     
+  </AuthenticatedLayout>
+</template>
 
-  
-  <script setup>
-  import { ref } from 'vue';
-  import { Head, usePage } from '@inertiajs/vue3';
-  import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+<script setup>
 
-  const { props } = usePage();
-  const partener = ref(props.partener);
-  </script>
-  
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import InputLabel from '@/Components/InputLabel.vue';
+import BackButton from '@/Components/BackButton.vue';
+import LinkButton from '@/Components/LinkButton.vue';
+
+const props = defineProps({
+  partener: Object
+});
+
+const deletePartener = () => {
+  if (confirm('Are you sure you want to delete this partener?')) {
+  }
+};
+</script>
