@@ -17,7 +17,10 @@ class PartenerFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name'=>fake()->name(),
+            'email'=>fake()->unique()->safeEmail(),
+            'phone_number'=>fake()->phoneNumber(),
+            'numero_siret'=>fake()->randomNumber(6, true),
         ];
     }
 }
