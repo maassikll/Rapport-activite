@@ -29,8 +29,16 @@ class ClientController extends Controller
         
     }
 
-    public function edit(Client $client){}
-    public function update(Request $request, Client $client){}
+    public function edit($id){
+        $client = Client::find($id);
+        return Inertia::render('Clients/Edit',compact('client'));
+    }
+    public function update(Request $request,$id){
+        $client = Client::find($id);
+        $client->update($request->all());
+        return redirect()->route('clients.index');
+
+    }
     public function destroy($id){
         $client = Client::find($id);
         $client->delete();
@@ -38,10 +46,9 @@ class ClientController extends Controller
 
     }
 
-    public function show(Client $client){
-        return Inertia::render('Clients/Show', [
-            'client' => $client
-        ]);
+    public function show($id){
+        $client = Client::find($id);
+        return Inertia::render('Clients/Show',compact('client'));
     }
 
     public function search(Request $request){}

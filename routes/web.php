@@ -42,17 +42,21 @@ Route::middleware('auth')->group(function () {
     Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::get('users/create',[UserController::class, 'create'])->name('users.create');
     Route::post('users',[UserController::class,'store'])->name('users.store');
-    Route::get('users/{id}', [UserController::class, 'show'])->name('users.show');
-    Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::get('users/{user}', [UserController::class, 'show'])->name('users.show');
+    Route::get('users/{user}/edit',[UserController::class,'edit'])->name('users.edit');
+    Route::put('users/{user}',[UserController::class,'update'])->name('users.update');
+    Route::delete('users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
     
     
     Route::get('clients', [ClientController::class, 'index'])->name('clients.index');
     Route::get('clients/create',[ClientController::class, 'create'])->name('clients.create');
     Route::post('clients',[ClientController::class, 'store'])->name('clients.store');
     Route::get('clients/{client}',[ClientController::class, 'show'])->name('clients.show');
-    Route::delete('cleints/{client}',[ClientController::class, 'destroy'])->name('clients.destroy');
-    
-    
+    Route::get('clients/{client}/edit',[ClientController::class,'edit'])->name('clients.edit');
+    Route::put('clients/{client}',[ClientController::class,'update'])->name('clients.update');
+    Route::delete('clients/{id}',[ClientController::class,'destroy'])->name('clients.destroy');
+
+
     Route::get('parteners',[PartenerController::class,'index'])->name('parteners.index');
     Route::get('parteners/create',[PartenerController::class,'create'])->name('parteners.create');
     Route::post('parteners',[PartenerController::class,'store'])->name('parteners.store');

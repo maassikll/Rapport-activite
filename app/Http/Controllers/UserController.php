@@ -75,11 +75,22 @@ class UserController extends Controller
         return Inertia::render('Users/Show', compact('user'));
     }
 
-    public function edit(User $user){}
-    public function update(Request $request, User $user){}
-    public function destroy(User $user){
+    public function edit($id){
+        $user = User::find($id);
+        return Inertia::render('Users/Edit', compact('user'));
+    }
+
+    public function update(Request $request,$id){
+        $user = User::find($id);
+        $user->update($request->all());
+        return redirect()->route('users.index');
+    }
+
+
+    public function destroy($id){
+        $user = User::find($id);
         $user->delete();
-        return to_route('users.index');
+        return redirect()->route('users.index');
 
     }
 

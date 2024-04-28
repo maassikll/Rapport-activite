@@ -59,10 +59,10 @@ class PartenerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+        #TODO : verifier les champs
         $partener = Partener::find($id);
         $partener->update($request->all());
-        return redirect()->route('parteners.index')->with('messge','Partener mis a jour avec succée');
+        return redirect()->route('parteners.index');
     }
 
     /**

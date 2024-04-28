@@ -7,7 +7,7 @@
         </template>
 
         
-
+        
         <div class="mb-4 inline-flex w-full overflow-hidden rounded-lg bg-white shadow-md">
             <div class="flex w-12 items-center justify-center bg-blue-500">
                 <svg class="h-6 w-6 fill-current text-white" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
@@ -74,7 +74,7 @@
                         
                         <td class="border-b border-gray-200 bg-white px-0 py-2 text-sm flex ">
                             <LinkButton :href="route('users.show', { id: user.id })" :active="route().current('users.show')">Show</LinkButton>
-                            <LinkButton :href="route('users.show', { id: user.id })" :active="route().current('users.show')">Edit</LinkButton>
+                            <LinkButton :href="route('users.edit', { id: user.id })" :active="route().current('users.edit')">Edit</LinkButton>
                             <LinkButton :href="route('users.destroy',user.id)"  method="DELETE">Delete</LinkButton>
                    
                         </td>
@@ -101,12 +101,6 @@ import { Head } from '@inertiajs/vue3';
 import LinkButton from '@/Components/LinkButton.vue';
 import BackButton from '@/Components/BackButton.vue';
 import { useForm  } from '@inertiajs/vue3';
-
-const form = useForm({});
-
-const deletePost = (id) => {
-    form.delete(`users/${id}`);
-};
 
 
 const props = defineProps({
