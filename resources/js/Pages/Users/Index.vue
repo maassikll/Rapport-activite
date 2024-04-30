@@ -18,7 +18,7 @@
     
             <div class="-mx-3 px-4 py-2">
                 <div class="mx-3">
-                    <span class="font-semibold text-blue-500">Info</span>
+                    <span class="font-semibold text-blue-500">Info Employers</span>
                     <p class="text-sm text-gray-600">table des employers </p>
                 </div>
             </div>
@@ -26,8 +26,10 @@
 
         
 
-        <div class="flex justify-end">
+        <div class="flex justify-end flex">
             <LinkButton :href="route('users.create')" :active="route().current('users.create')">Create</LinkButton>
+            <LinkButton :href="route('report')" :active="route().current('report')">PDF</LinkButton>
+            
         </div>
 
         <div class="inline-block min-w-full overflow-hidden rounded-lg shadow">
@@ -44,7 +46,7 @@
                             Email
                         </th>
                         <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
-                            Numero Téléphone
+                            Numéro téléphone
                         </th>
                         <th class="border-b-2 border-gray-200 bg-gray-100 px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
                             Matricule employer
@@ -52,6 +54,7 @@
                         <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
                             
                         </th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -68,14 +71,18 @@
                         <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                             <p class="text-gray-900 whitespace-no-wrap">{{ user.phone_number }}</p>
                         </td>
+                        
+                        
                         <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                             <p class="text-gray-900 whitespace-no-wrap">{{ user.matricule }}</p>
                         </td>
+                        
                         
                         <td class="border-b border-gray-200 bg-white px-0 py-2 text-sm flex ">
                             <LinkButton :href="route('users.show', { id: user.id })" :active="route().current('users.show')">Show</LinkButton>
                             <LinkButton :href="route('users.edit', { id: user.id })" :active="route().current('users.edit')">Edit</LinkButton>
                             <LinkButton :href="route('users.destroy',user.id)"  method="DELETE">Delete</LinkButton>
+                            
                    
                         </td>
 
@@ -100,10 +107,17 @@ import Pagination from '@/Components/Pagination.vue'
 import { Head } from '@inertiajs/vue3';
 import LinkButton from '@/Components/LinkButton.vue';
 import BackButton from '@/Components/BackButton.vue';
-import { useForm  } from '@inertiajs/vue3';
+
 
 
 const props = defineProps({
     users: Object
 })
+
+console.log(props);
+
+const printPDF = () => {
+  window.print();
+};
+
 </script>

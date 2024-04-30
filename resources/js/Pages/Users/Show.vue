@@ -50,6 +50,7 @@
           <div class="mt-8 flex">
               <LinkButton :href="route('users.edit', { id: user.id })" :active="route().current('users.edit')">Edit</LinkButton>
               <LinkButton  :href="route('users.destroy', { id: user.id })" method="DELETE">Delete</LinkButton>
+             
           </div>
       </div>
 
@@ -63,7 +64,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import BackButton from '@/Components/BackButton.vue';
 import LinkButton from '@/Components/LinkButton.vue';
-import { router } from '@inertiajs/vue3';
+
 
 const props = defineProps({
   user: Object

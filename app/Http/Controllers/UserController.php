@@ -20,12 +20,24 @@ class UserController extends Controller
     {
         $this->fixPassword ='f$K*oKkML9><';
     }
-    public function index()
+  
+        
+        public function index()
     {
-        return Inertia::render('Users/Index', [
+        return Inertia::render('Users/Index',[
             'users' => User::paginate()
         ]);
     }
+    
+
+    public function report()
+    {
+        return Inertia::render('Users/Report',[
+            'users' => User::paginate()
+        ]);
+    }
+
+
 
 
     public function create()
@@ -93,6 +105,11 @@ class UserController extends Controller
         return redirect()->route('users.index');
 
     }
+
+
+    
+
+
 
 
     public function generateMatricule(): int

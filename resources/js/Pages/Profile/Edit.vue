@@ -4,6 +4,7 @@ import DeleteUserForm from './Partials/DeleteUserForm.vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdatePhoneForm from './Partials/UpdatePhoneForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
+import CheckBoxCalendar from './Rapport/CheckBoxCalendar.vue';
 import { Head } from '@inertiajs/vue3';
 defineProps({
     mustVerifyEmail: Boolean,
@@ -32,6 +33,10 @@ defineProps({
                 <div class="p-6 sm:p-8 bg-white shadow sm:rounded-lg">
                     <UpdatePhoneForm class="max-w-xl" />
                 </div>
+
+                
+
+                
 
 
                 
