@@ -30,11 +30,16 @@ class UserController extends Controller
     }
     
 
-    public function report()
+    public function report($id)
     {
-        return Inertia::render('Users/Report',[
-            'users' => User::paginate()
-        ]);
+        $user = User::find($id);
+
+        if (!$user) {
+            // Handle case where user with given ID is not found
+            abort(404, 'User not found');
+        }
+    
+        return Inertia::render('Users/Report', ['user' => $user]);
     }
 
 

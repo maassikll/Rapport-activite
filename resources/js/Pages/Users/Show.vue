@@ -50,6 +50,7 @@
           <div class="mt-8 flex">
               <LinkButton :href="route('users.edit', { id: user.id })" :active="route().current('users.edit')">Edit</LinkButton>
               <LinkButton  :href="route('users.destroy', { id: user.id })" method="DELETE">Delete</LinkButton>
+              <LinkButton :href="route('report', { id: user.id })" :active="route().current('report')">PDF</LinkButton>
              
           </div>
       </div>

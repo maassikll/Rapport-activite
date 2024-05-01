@@ -28,7 +28,7 @@
 
         <div class="flex justify-end flex">
             <LinkButton :href="route('users.create')" :active="route().current('users.create')">Create</LinkButton>
-            <LinkButton :href="route('report')" :active="route().current('report')">PDF</LinkButton>
+            
             
         </div>
 
