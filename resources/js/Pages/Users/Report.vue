@@ -18,16 +18,13 @@
   
           <div class="-mx-3 px-4 py-2">
               <div class="mx-3">
-                  <span class="font-semibold text-blue-500">Info Employers</span>
-                  <p class="text-sm text-gray-600">table des employers </p>
+                  <a @click="generatePdf" class="font-semibold text-blue-500" style="cursor: pointer;">Télecharger {{user.first_name}}.pdf</a>
+                  <p class="text-sm text-gray-600">Ce pdf contient les informations d'un employer  </p>
               </div>
           </div>
       </div>
 
-  <div>
-    
-    <SecondaryButton @click="generatePdf">Generate PDF</SecondaryButton>
-  </div>
+
 
 
 </AuthenticatedLayout>
@@ -99,7 +96,7 @@ const generatePdf = async () => {
       body: userData.slice(1)
     });
     doc.save('Employer_Details.pdf');
-    
+
   } catch (error) {
     console.error('Error generating PDF:', error);
   }
