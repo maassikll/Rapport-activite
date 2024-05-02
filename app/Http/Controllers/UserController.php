@@ -39,7 +39,7 @@ class UserController extends Controller
             abort(404, 'User not found');
         }
     
-        return Inertia::render('Users/Report', ['user' => $user]);
+        return response()->json(['user' => $user]);
     }
 
 

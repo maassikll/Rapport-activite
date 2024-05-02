@@ -52,9 +52,9 @@
                             Matricule employer
                         </th>
                         <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
-                            
+                            Rapport d'activité
                         </th>
-                        
+                        <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -71,10 +71,15 @@
                         <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                             <p class="text-gray-900 whitespace-no-wrap">{{ user.phone_number }}</p>
                         </td>
-                        
-                        
                         <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                             <p class="text-gray-900 whitespace-no-wrap">{{ user.matricule }}</p>
+                        </td>
+                        <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                            <svg  style="cursor: pointer;" @click="generatePdfEmploee(user.id)" class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"  fill="currentColor" >
+                                <path fill-rule="evenodd" d="M13 11.15V4a1 1 0 1 0-2 0v7.15L8.78 8.374a1 1 0 1 0-1.56 1.25l4 5a1 1 0 0 0 1.56 0l4-5a1 1 0 1 0-1.56-1.25L13 11.15Z" clip-rule="evenodd"/>
+                                <path fill-rule="evenodd" d="M9.657 15.874 7.358 13H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-2.358l-2.3 2.874a3 3 0 0 1-4.685 0ZM17 16a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H17Z" clip-rule="evenodd"/>
+                            </svg>
+                            <a @click="generatePdfEmploee(user.id)" class="text-blue-600 whitespace-no-wrap no-underline hover:underline" style="cursor: pointer;">Pdf</a>
                         </td>
                         
                         
@@ -82,14 +87,7 @@
                             <LinkButton :href="route('users.show', { id: user.id })" :active="route().current('users.show')">Show</LinkButton>
                             <LinkButton :href="route('users.edit', { id: user.id })" :active="route().current('users.edit')">Edit</LinkButton>
                             <LinkButton :href="route('users.destroy',user.id)"  method="DELETE">Delete</LinkButton>
-                            
-                   
                         </td>
-
-                           
-
-
-
                     </tr>
                 </tbody>
             </table>
@@ -107,7 +105,9 @@ import Pagination from '@/Components/Pagination.vue'
 import { Head } from '@inertiajs/vue3';
 import LinkButton from '@/Components/LinkButton.vue';
 import BackButton from '@/Components/BackButton.vue';
-import { usePage } from '@inertiajs/vue3';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
 
 
 
@@ -118,5 +118,63 @@ const props = defineProps({
 const printPDF = () => {
   window.print();
 };
+
+const loadImage = (src) => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = (error) => reject(error);
+    img.src = src;
+  });
+};
+
+const generatePdfEmploee = async (userId) => {
+  try {
+    const response = await axios.get(`/users/${userId}/report`);
+    const userData = response.data.user;
+
+    // Load images asynchronously first hehe boyy
+    const [logo, logoText] = await Promise.all([
+      loadImage('/images/logwireLogo.jpeg'),
+      loadImage('/images/logwireTextLogo.jpeg')
+    ]);
+
+    const doc = new jsPDF('p', 'pt', 'A4');
+
+    const logoWidth = 100;
+    const logoHeight = (logoWidth * logo.height) / logo.width;
+    doc.addImage(logo, 'JPEG', 10, 10, logoWidth, logoHeight);
+
+    const logoTextWidth = 90;
+    const logoTextHeight = (logoTextWidth * logoText.height) / logoText.width;
+    doc.addImage(logoText, 'JPEG', 82, 67, logoTextWidth, logoTextHeight);
+    
+    const userDataContent = [
+      ['Nom', 'Prenom', 'Email', 'Téléphone', 'Matricule'],
+      [userData.first_name, userData.last_name, userData.email, userData.phone_number, userData.matricule]
+    ];
+
+    const styles = {
+      font: 'Arial',
+      fontStyle: 'normal',
+      fontSize: 12,
+      textColor: [0, 0, 0],
+      halign: 'center',
+      valign: 'middle',
+    };
+
+    await doc.autoTable({
+      startY: 150,
+      styles: styles,
+      head: userDataContent.slice(0, 1),
+      body: userDataContent.slice(1)
+    });
+    doc.save('User_Details.pdf');
+
+  } catch (error) {
+    console.error('Error generating PDF:', error);
+  }
+};
+
 
 </script>
