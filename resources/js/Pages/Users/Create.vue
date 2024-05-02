@@ -78,7 +78,8 @@ const form = useForm({
 
 const submit = () => {
     form.post(route('users.store'), {
-        onFinish: () => form.reset('phone_number','email')}
+        onFinish: () =>  
+        form.reset('phone_number','email')}
     );
 };
 

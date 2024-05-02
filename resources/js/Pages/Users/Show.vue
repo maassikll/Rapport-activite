@@ -21,30 +21,30 @@
             </div>
         </div>
 
-      <div class="mt-8">
-          <div>
-              <InputLabel for="name" value="Nom user" />
+      <div class="mt-8 ">
+          <div class="mt-3 flex">
+              <InputLabel class="px-3" for="name" value="Nom Employer"  />
               <span>{{ user.first_name }}</span>
           </div>
 
-          <div>
-              <InputLabel for="name" value="Nom user" />
+          <div class="mt-3 flex">
+              <InputLabel class="px-3" for="name" value="Prenom Employer" />
               <span>{{ user.last_name }}</span>
           </div>
 
-          <div class="mt-3">
-              <InputLabel for="email" value="Email" />
+          <div class="mt-3 flex">
+              <InputLabel class="px-3" for="email" value="Email" />
               <span>{{ user.email }}</span>
           </div>
 
-          <div class="mt-3">
-              <InputLabel for="phone_number" value="Numéro de téléphone" />
+          <div class="mt-3 flex">
+              <InputLabel class="px-3" for="phone_number" value="Numéro de téléphone" />
               <span>{{ user.phone_number }}</span>
           </div>
 
-          <div class="mt-3">
-              <InputLabel for="matricule" value="Matricule" />
-              <span>{{ user.matricule }}</span>
+          <div class="mt-3 flex">
+              <InputLabel class="px-3" for="matricule" value="Matricule " />
+              <span>  {{ user.matricule }}</span>
           </div>
 
           <div class="mt-8 flex">
