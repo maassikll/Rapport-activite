@@ -17,9 +17,9 @@ class DatabaseSeeder extends Seeder
     {
 
         
-        //User::factory(100)->create();
-        //Partener::factory(100)->create();
-        Client::factory(100)->create();
+        //User::factory(50)->create();
+        //Partener::factory(50)->create();
+        //Client::factory(50)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

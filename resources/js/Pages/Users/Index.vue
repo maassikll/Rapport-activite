@@ -43,16 +43,10 @@
                             Prenom
                         </th>
                         <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
-                            Email
+                            Matricule
                         </th>
                         <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
-                            Numéro téléphone
-                        </th>
-                        <th class="border-b-2 border-gray-200 bg-gray-100 px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
-                            Matricule employer
-                        </th>
-                        <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
-                            Rapport d'activité
+                            CRA
                         </th>
                         <th class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"></th>
                     </tr>
@@ -66,24 +60,19 @@
                             <p class="text-gray-900 whitespace-no-wrap">{{ user.last_name }}</p>
                         </td>
                         <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                            <p class="text-gray-900 whitespace-no-wrap">{{ user.email }}</p>
-                        </td>
-                        <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                            <p class="text-gray-900 whitespace-no-wrap">{{ user.phone_number }}</p>
-                        </td>
-                        <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                             <p class="text-gray-900 whitespace-no-wrap">{{ user.matricule }}</p>
                         </td>
                         <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                            <a @click="generatePdfEmploee(user.id)" class="text-blue-600 whitespace-no-wrap no-underline hover:underline " style="cursor: pointer;">Pdf</a>
                             <svg  style="cursor: pointer;" @click="generatePdfEmploee(user.id)" class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"  fill="currentColor" >
                                 <path fill-rule="evenodd" d="M13 11.15V4a1 1 0 1 0-2 0v7.15L8.78 8.374a1 1 0 1 0-1.56 1.25l4 5a1 1 0 0 0 1.56 0l4-5a1 1 0 1 0-1.56-1.25L13 11.15Z" clip-rule="evenodd"/>
                                 <path fill-rule="evenodd" d="M9.657 15.874 7.358 13H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-2.358l-2.3 2.874a3 3 0 0 1-4.685 0ZM17 16a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H17Z" clip-rule="evenodd"/>
                             </svg>
-                            <a @click="generatePdfEmploee(user.id)" class="text-blue-600 whitespace-no-wrap no-underline hover:underline" style="cursor: pointer;">Pdf</a>
+                            
                         </td>
                         
                         
-                        <td class="border-b border-gray-200 bg-white px-0 py-2 text-sm flex ">
+                        <td class="border-b border-gray-200 bg-white px-5 py-6 text-sm flex ">
                             <LinkButton :href="route('users.show', { id: user.id })" :active="route().current('users.show')">Show</LinkButton>
                             <LinkButton :href="route('users.edit', { id: user.id })" :active="route().current('users.edit')">Edit</LinkButton>
                             <LinkButton :href="route('users.destroy',user.id)"  method="DELETE">Delete</LinkButton>
@@ -169,7 +158,7 @@ const generatePdfEmploee = async (userId) => {
       head: userDataContent.slice(0, 1),
       body: userDataContent.slice(1)
     });
-    doc.save('User_Details.pdf');
+    doc.save(`${userData.first_name}.pdf`);
 
   } catch (error) {
     console.error('Error generating PDF:', error);
