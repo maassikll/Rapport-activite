@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PartenerController;
 
@@ -67,6 +68,9 @@ Route::middleware('auth')->group(function () {
     Route::get('parteners/{partener}/edit',[PartenerController::class,'edit'])->name('parteners.edit');
     Route::put('partener/{partener}',[PartenerController::class,'update'])->name('parteners.update');
     Route::delete('parteners/{id}', [PartenerController::class, 'destroy'])->name('parteners.destroy');
+
+
+    Route::get('report',[ReportController::class,'index'])->name('report.index');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
