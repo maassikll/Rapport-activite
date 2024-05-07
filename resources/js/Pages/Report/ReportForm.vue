@@ -61,43 +61,50 @@
   };
   
   const generatePdf = async () => {
-  const doc = new jsPDF;
+    try{
+        const doc = new jsPDF;
 
- 
-  const selectedClientName = document.getElementById('clientDropdown').value;
-  const selectedPartnerName = document.getElementById('partnerDropdown').value;
-
-  if (selectedClientName && selectedPartnerName) {
-    
-    const tableData = [];
-
-   
-    Object.entries(checkedDays.value).forEach(([day, color]) => {
-      if (color) {
         
-        const code = colorCodes[color];
+        const selectedClientName = document.getElementById('clientDropdown').value;
+        const selectedPartnerName = document.getElementById('partnerDropdown').value;
+
+        if (selectedClientName && selectedPartnerName) {
         
-        tableData.push({ Day: day, Code: code });
-      }
-    });
+        const tableData = [];
 
-    
-    doc.text(`Nom client: ${selectedClientName}`, 10, 10);
-    doc.text(`Nom partener: ${selectedPartnerName}`, 10, 20);
+        
+        Object.entries(checkedDays.value).forEach(([day, color]) => {
+            if (color) {
+            
+            const code = colorCodes[color];
+            
+            tableData.push({ Day: day, Code: code });
+            }
+        });
 
-   
-    if (tableData.length > 0) {
-     
-      doc.autoTable({
-        //TODO Make the Comment system
-        head: [['Day', 'Code','Comment']],
-        body: tableData.map(({ Day, Code }) => [Day, Code]),
-        startY: 30 // Start the table below the client and partner names
-      });
+        
+        doc.text(`Nom client: ${selectedClientName}`, 10, 10);
+        doc.text(`Nom partener: ${selectedPartnerName}`, 10, 20);
+
+        
+        if (tableData.length > 0) {
+        
+            doc.autoTable({
+            //TODO Make the Comment system
+            head: [['Day', 'Code','Comment']],
+            body: tableData.map(({ Day, Code }) => [Day, Code]),
+            startY: 30 // Start the table below the client and partner names
+            });
+        }
+
+        doc.save(`Activity_Report.pdf`);
+        }
+
+    }catch{
+        console.log('Undefined Error');
+
     }
 
-    doc.save(`Activity_Report.pdf`);
-  }
 };
   </script>
   
