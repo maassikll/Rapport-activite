@@ -113,17 +113,16 @@ const getCurrentMonth = () => {
 
 
 
-// Function to get the current date
 const getCurrentDate = () => {
   const today = new Date();
   return {
     year: today.getFullYear(),
-    month: today.getMonth()+1, // Months are zero-based
+    month: today.getMonth()+1, 
     day: today.getDate(),
   };
 };
 
-// Use ref to make reactive
+
 const currentDate = ref(getCurrentDate());
 const checkedDays = ref({});
 const selectedColor = ref({});
@@ -146,13 +145,12 @@ const toggleCheckbox = (day) => {
   }
 };
 
-// Destructuring current date
 const { year: currentYear, month: currentMonth, day: currentDay } = currentDate.value;
 
-// Get the days of the week
+
 const daysOfWeek = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
 
-// Generate the calendar
+
 const generateCalendar = () => {
   const firstDayOfMonth = new Date(currentYear, currentMonth - 1, 1).getDay();
   const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
@@ -160,12 +158,11 @@ const generateCalendar = () => {
   let currentWeek = [];
   let dayCounter = 1;
 
-  // Add empty cells for days before the first day of the month
   for (let i = 0; i < firstDayOfMonth; i++) {
     currentWeek.push("");
   }
 
-  // Add days of the month
+
   for (let i = firstDayOfMonth; i < 7; i++) {
     if (dayCounter <= daysInMonth) {
       currentWeek.push(dayCounter);
@@ -177,7 +174,7 @@ const generateCalendar = () => {
 
   weeks.push(currentWeek);
 
-  // Add remaining days of the month
+
   while (dayCounter <= daysInMonth) {
     currentWeek = [];
     for (let i = 0; i < 7; i++) {
@@ -194,7 +191,7 @@ const generateCalendar = () => {
   return weeks;
 };
 
-// Reactive calendar weeks
+
 const weeks = ref(generateCalendar());
 
 
@@ -202,8 +199,8 @@ const loadSavedData = () => {
   const savedData = localStorage.getItem('calendarData');
   if (savedData) {
     const parsedData = JSON.parse(savedData);
-    checkedDays.value = parsedData.checkedDays || {}; // Ensure default value if saved data is not available
-    selectedColor.value = parsedData.selectedColor || {}; // Ensure default value if saved data is not available
+    checkedDays.value = parsedData.checkedDays || {}; 
+    selectedColor.value = parsedData.selectedColor || {}; 
   }
 };
 
@@ -233,11 +230,11 @@ const generatePdf = async () => {
   if (selectedClientName && selectedPartnerName) {
     const tableData = [];
 
-    // Iterate over the weeks array to get the days of the month
+    
     weeks.value.forEach((week) => {
       week.forEach((day) => {
         if (day !== "") {
-          const color = checkedDays.value[day]; // Get the color for the current day
+          const color = checkedDays.value[day]; 
           if (color) {
             const code = colorCodes[color];
             const formatedDate = `${day}/${getCurrentMonth()}/${currentYear}`;
@@ -254,7 +251,7 @@ const generatePdf = async () => {
       doc.autoTable({
         head: [["Day", "Code", "comment"]],
         body: tableData.map(({ Day, Code }) => [Day, Code]),
-        startY: 30, // Start the table below the client and partner names
+        startY: 30, 
       });
     }
     doc.save(`Activity_Report.pdf`);
@@ -280,7 +277,7 @@ const getButtonClasses = (day) => {
     'rounded-full': true,
   };
 
-  // Dynamically set background and text colors based on checkedDays
+  
   switch (backgroundColor) {
     case 'green':
       classes['bg-green-500'] = true;
