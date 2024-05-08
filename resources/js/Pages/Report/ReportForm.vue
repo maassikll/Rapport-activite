@@ -1,9 +1,10 @@
 <template>
   <Head title="Test" />
   <AuthenticatedLayout>
-    <div class="flex  m-2">
-      <div class="max-w-sm w-full shadow-lg flex">
-        <div class="md:py-2 py-1 md:px-4 px-2 dark:bg-gray-700 bg-gray-50 rounded-b">
+    <div class=" flex  m-2">
+      <div class="max-w-sm w-full shadow-lg flex ">
+        
+        <div class="md:py-2 py-1 md:px-2 px-2 dark:bg-gray-700 bg-gray-50 rounded-l-lg">
             <div class="px-4">
                 <div class="border-b pb-4 border-gray-400 border-dashed">
                     <p class="text-sm pt-2 leading-4 leading-none text-gray-600 dark:text-gray-300">Séléctionner votre partener</p>
@@ -28,7 +29,8 @@
             </div>
         </div>
         
-        <div class="md:p-2 p-1 dark:bg-gray-800 bg-white rounded-t">
+
+          <div class="md:p-2 p-1 dark:bg-gray-800 bg-white rounded-r-lg">
           <div class="px-4 flex items-center justify-between">
             <span
               tabindex="0"
@@ -60,15 +62,21 @@
               <tbody>
                 <tr v-for="(week, index) in weeks" :key="index">
                   <td v-for="day in week" :key="day" class="pt-6">
-                    <div class="transition ease-in-out px-2 py-2 cursor-pointer flex w-full justify-center hover:-translate-y-1 hover:scale-110 duration-300" >
-                      <p :class="getButtonClasses(day)" role="link"  @click="toggleCheckbox(day)">{{ day }}</p>
-                    </div>
+                    <template v-if="day !== ''">
+                      <div class="transition ease-in-out px-2 py-2 cursor-pointer flex w-full justify-center hover:-translate-y-1 hover:scale-110 duration-300" >
+                        <p :class="getButtonClasses(day)" role="link"  @click="toggleCheckbox(day)">{{ day }}</p>
+                      </div>
+                    </template>
+                    
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
+
+       
+        
 
         <div class="m-3 justify-between ">
           <button @click="generatePdf" class="bg-blue-500 hover:bg-blue-700 text-white font-bold m-2  py-2 px-4 rounded ">Télécharger</button>
