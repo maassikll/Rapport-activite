@@ -1,5 +1,5 @@
 <template>
-    <div class="flex h-screen bg-gray-200 font-roboto">
+    <div class="flex h-screen bg-gray-200 font-roboto ">
         <Navigation />
 
         <div class="flex flex-1 flex-col overflow-hidden">
