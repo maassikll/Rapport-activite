@@ -1,7 +1,7 @@
 <template>
   <Head title="Test" />
   <AuthenticatedLayout>
-    <form id="reportForm" @submit.prevent="generatePdf" enctype="multipart/form-data">
+    <form @submit.prevent="submit">
       <div class=" flex  ml-20 overflow-x-auto">
       <div class="max-w-sm w-full shadow-lg flex ">
         
@@ -14,7 +14,7 @@
                     </select>
                 </div>
                 <div class="border-b pb-4 border-gray-400 border-dashed pt-3">
-                    <p class="text-sm  leading-4 leading-none text-gray-600 dark:text-gray-300">Séléctionner votre client</p>
+                    <p class="text-sm leading-4 leading-none text-gray-600 dark:text-gray-300">Séléctionner votre client</p>
                     <select id="clientDropdown" class="leading-3 mt-3 py-3">
                         <option v-for="name in clientNames" :key="name" :value="name">{{ name }}</option>
                     </select>
@@ -84,24 +84,15 @@
         
 
         <div class="m-3 justify-between ">
-          <button type="submit" @click="generatePdf" class="bg-blue-500 hover:bg-blue-700 text-white font-bold m-2  py-2 px-4 rounded ">Télécharger</button>
+          <button  @click="downloadPdf" class="bg-blue-500 hover:bg-blue-700 text-white font-bold m-2  py-2 px-4 rounded ">Télécharger</button>
           <button @click="" class="bg-blue-500 hover:bg-blue-700 text-white font-bold  m-2  py-2 px-4  rounded">Enregistrer</button>
-          <button @click="generatePdfAndSubmit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold  m-2  py-2 px-4  rounded opacity-25">Envoie pdf </button>
+          <button  @click="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold  m-2  py-2 px-4  rounded opacity-100">Envoie pdf </button>
         </div>
       
         
       </div>
     </div>
 
-    <input type="file" @input="form.pdf_data = $event.target.files[0]" />
-    <progress v-if="form.progress" :value="form.progress.percentage" max="100">
-      {{ form.progress.percentage }}%
-    </progress>
-    <button type="submit">Envoyer le pdf</button>
-
-
-    
-    
     </form>
     
   </AuthenticatedLayout>
@@ -110,7 +101,7 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { ref, onMounted, watchEffect } from "vue";
-import { Head, useForm, usePage } from "@inertiajs/vue3";
+import { Head, useForm } from "@inertiajs/vue3";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 
@@ -230,6 +221,10 @@ const generateCalendar = () => {
 const weeks = ref(generateCalendar());
 
 
+const form = useForm({
+  pdf_data:'',
+})
+
 
 
 const generatePdf = async () => {
@@ -269,41 +264,71 @@ const generatePdf = async () => {
         startY: 30, 
       });
     }
-    // Get the PDF data as a blob
-    const pdfBlob = doc.output('blob');
+    
+    return doc.output('blob');
 
-    // Create a FormData object and append the PDF blob to it
-    const formData = new FormData();
-    formData.append('pdf_data', pdfBlob, 'activity_report.pdf');
-
-    // Use the Inertia form helper to submit the form data
-    const response = await form.post('/report', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-
-    // Redirect or show a success message as needed
-    if (response) {
-      console.log('PDF Saved');
-    } else {
-      console.log('nothing');
-    }
   }
+  
 };
 
 
-const form = useForm({
-  pdf_data:'',
-})
+const downloadPdf = async () => {
+  const doc = new jsPDF();
+  
+  const selectedClientName = document.getElementById("clientDropdown").value;
+  const selectedPartnerName = document.getElementById("partnerDropdown").value;
+  if (selectedClientName && selectedPartnerName) {
+    const tableData = [];
 
-const submitedPdf = async () => {
-  // Generate the PDF
+    weeks.value.forEach((week) => {
+      week.forEach((day) => {
+        if (day !== "") {
+          const color = checkedDays.value[day]; 
+          if (color) {
+            const code = colorCodes[color];
+            const formatedDate = `${day}/${getCurrentMonth()}/${currentYear}`;
+            tableData.push({ Day: formatedDate, Code: code });
+          } else {
+           
+            const dayOfWeek = new Date(currentYear, currentMonth - 1, day).getDay();
+            if (dayOfWeek === 6 || dayOfWeek === 0) { 
+              const formatedDate = `${day}/${getCurrentMonth()}/${currentYear}`;
+              tableData.push({ Day: formatedDate, Code: "weekend" });
+            }
+          }
+        }
+      });
+    });
+    doc.text(`Nom client: ${selectedClientName}`, 10, 10);
+    doc.text(`Nom partener: ${selectedPartnerName}`, 10, 20);
+
+    if (tableData.length > 0) {
+      doc.autoTable({
+        head: [["Day", "Code", "comment"]],
+        body: tableData.map(({ Day, Code }) => [Day, Code]),
+        startY: 30, 
+      });
+    }
+    
+    return doc.save('EMployer.pdf');
+
+  }
+  
+};
+
+
+async function generateAndSubmitPdf() {
+  
   const pdfData = await generatePdf();
+  form.pdf_data = pdfData;
+  form.post(route('report.store'));
+}
 
-  // Submit the PDF data to the server
-  await form.post('/report', { pdf_data: pdfData });
-};
+
+
+function submit() {
+  generateAndSubmitPdf();
+}
 
 
 
@@ -329,7 +354,6 @@ const getButtonClasses = (day) => {
   if (dayOfWeek === 6 || dayOfWeek === 0) {
     classes['bg-gray-500'] = true;
   } else {
-    // Apply color based on selection for other days
     switch (backgroundColor) {
       case '#38a169':
         classes['bg-green-500'] = true;

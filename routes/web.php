@@ -71,6 +71,8 @@ Route::middleware('auth')->group(function () {
 
 
     Route::get('report',[ReportController::class,'index'])->name('report.index');
+    Route::post('report',[ReportController::class,'store'])->name('report.store');
+    Route::get('report/{id}',[ReportController::class,'show'])->name('report.show');
     
 
 
