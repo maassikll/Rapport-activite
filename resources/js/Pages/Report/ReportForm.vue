@@ -1,7 +1,8 @@
 <template>
   <Head title="Test" />
   <AuthenticatedLayout>
-    <div class=" flex  ml-20 overflow-x-auto">
+    <form id="reportForm" @submit.prevent="generatePdf" enctype="multipart/form-data">
+      <div class=" flex  ml-20 overflow-x-auto">
       <div class="max-w-sm w-full shadow-lg flex ">
         
         <div class="md:py-2 py-1 md:px-2 px-2 dark:bg-gray-700 bg-gray-50 rounded-l-lg">
@@ -83,29 +84,40 @@
         
 
         <div class="m-3 justify-between ">
-          <button @click="generatePdf" class="bg-blue-500 hover:bg-blue-700 text-white font-bold m-2  py-2 px-4 rounded ">Télécharger</button>
+          <button type="submit" @click="generatePdf" class="bg-blue-500 hover:bg-blue-700 text-white font-bold m-2  py-2 px-4 rounded ">Télécharger</button>
           <button @click="" class="bg-blue-500 hover:bg-blue-700 text-white font-bold  m-2  py-2 px-4  rounded">Enregistrer</button>
-          <button @click="" class="bg-blue-500 hover:bg-blue-700 text-white font-bold  m-2  py-2 px-4  rounded opacity-25">Envoie pdf </button>
+          <button @click="generatePdfAndSubmit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold  m-2  py-2 px-4  rounded opacity-25">Envoie pdf </button>
         </div>
       
         
       </div>
     </div>
 
-   
+    <input type="file" @input="form.pdf_data = $event.target.files[0]" />
+    <progress v-if="form.progress" :value="form.progress.percentage" max="100">
+      {{ form.progress.percentage }}%
+    </progress>
+    <button type="submit">Envoyer le pdf</button>
+
+
+    
+    
+    </form>
+    
   </AuthenticatedLayout>
 </template>
 
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { ref, onMounted, watchEffect } from "vue";
-import { Head } from "@inertiajs/vue3";
+import { Head, useForm, usePage } from "@inertiajs/vue3";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 
 const props = defineProps({
   partenerNames:Array,
   clientNames:Array,
+  report:Object,
 });
 
 const getCurrentMonth = () => {
@@ -257,9 +269,44 @@ const generatePdf = async () => {
         startY: 30, 
       });
     }
-    doc.save(`Activity_Report.pdf`);
+    // Get the PDF data as a blob
+    const pdfBlob = doc.output('blob');
+
+    // Create a FormData object and append the PDF blob to it
+    const formData = new FormData();
+    formData.append('pdf_data', pdfBlob, 'activity_report.pdf');
+
+    // Use the Inertia form helper to submit the form data
+    const response = await form.post('/report', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    // Redirect or show a success message as needed
+    if (response) {
+      console.log('PDF Saved');
+    } else {
+      console.log('nothing');
+    }
   }
 };
+
+
+const form = useForm({
+  pdf_data:'',
+})
+
+const submitedPdf = async () => {
+  // Generate the PDF
+  const pdfData = await generatePdf();
+
+  // Submit the PDF data to the server
+  await form.post('/report', { pdf_data: pdfData });
+};
+
+
+
 
 
 const getButtonClasses = (day) => {
@@ -309,5 +356,7 @@ const getButtonClasses = (day) => {
 
   return classes;
 };
+
+
 
 </script>
