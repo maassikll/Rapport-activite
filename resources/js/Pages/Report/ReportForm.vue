@@ -84,8 +84,8 @@
 
         <div class="m-3 justify-between ">
           <button @click="generatePdf" class="bg-blue-500 hover:bg-blue-700 text-white font-bold m-2  py-2 px-4 rounded ">Télécharger</button>
-          <button @click="saveDataToLocalStorage" class="bg-blue-500 hover:bg-blue-700 text-white font-bold  m-2  py-2 px-4  rounded">Enregistrer</button>
-          <button @click="saveDataToLocalStorage" class="bg-blue-500 hover:bg-blue-700 text-white font-bold  m-2  py-2 px-4  rounded opacity-25">Envoie pdf </button>
+          <button @click="" class="bg-blue-500 hover:bg-blue-700 text-white font-bold  m-2  py-2 px-4  rounded">Enregistrer</button>
+          <button @click="" class="bg-blue-500 hover:bg-blue-700 text-white font-bold  m-2  py-2 px-4  rounded opacity-25">Envoie pdf </button>
         </div>
       
         
@@ -218,31 +218,6 @@ const generateCalendar = () => {
 const weeks = ref(generateCalendar());
 
 
-const loadSavedData = () => {
-  const savedData = localStorage.getItem('calendarData');
-  if (savedData) {
-    const parsedData = JSON.parse(savedData);
-    checkedDays.value = parsedData.checkedDays || {}; 
-    selectedColor.value = parsedData.selectedColor || {}; 
-  }
-};
-
-const saveDataToLocalStorage = () => {
-  const dataToSave = {
-    checkedDays: checkedDays.value,
-    selectedColor: selectedColor.value,
-  };
-  localStorage.setItem('calendarData', JSON.stringify(dataToSave));
-};
-
-onMounted(() => {
-  loadSavedData();
-});
-
-watchEffect(() => {
-  saveDataToLocalStorage();
-});
-
 
 
 const generatePdf = async () => {
@@ -253,7 +228,6 @@ const generatePdf = async () => {
   if (selectedClientName && selectedPartnerName) {
     const tableData = [];
 
-    // Add logic to automatically mark Thursday and Saturday as "Weekend"
     weeks.value.forEach((week) => {
       week.forEach((day) => {
         if (day !== "") {
@@ -263,9 +237,9 @@ const generatePdf = async () => {
             const formatedDate = `${day}/${getCurrentMonth()}/${currentYear}`;
             tableData.push({ Day: formatedDate, Code: code });
           } else {
-            // Automatically mark Thursday and Saturday as "Weekend"
+           
             const dayOfWeek = new Date(currentYear, currentMonth - 1, day).getDay();
-            if (dayOfWeek === 6 || dayOfWeek === 0) { // Thursday is 4, Saturday is 6
+            if (dayOfWeek === 6 || dayOfWeek === 0) { 
               const formatedDate = `${day}/${getCurrentMonth()}/${currentYear}`;
               tableData.push({ Day: formatedDate, Code: "weekend" });
             }

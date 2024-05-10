@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Client;
 use App\Models\Partener;
-use Illuminate\Http\Request;
+
+
 
 class ReportController extends Controller
 {
