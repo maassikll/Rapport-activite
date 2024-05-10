@@ -72,7 +72,7 @@
                         </td>
                         
                         
-                        <td class="border-b border-gray-200 bg-white px-5 py-6 text-sm flex ">
+                        <td class="border-b border-gray-200 bg-white px-0 py-2 text-sm flex ">
                             <LinkButton :href="route('users.show', { id: user.id })" :active="route().current('users.show')">Show</LinkButton>
                             <LinkButton :href="route('users.edit', { id: user.id })" :active="route().current('users.edit')">Edit</LinkButton>
                             <LinkButton :href="route('users.destroy',user.id)"  method="DELETE">Delete</LinkButton>

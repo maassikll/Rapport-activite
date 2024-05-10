@@ -1,7 +1,7 @@
 <template>
   <Head title="Test" />
   <AuthenticatedLayout>
-    <div class=" flex  m-2">
+    <div class=" flex  ml-20 overflow-x-auto">
       <div class="max-w-sm w-full shadow-lg flex ">
         
         <div class="md:py-2 py-1 md:px-2 px-2 dark:bg-gray-700 bg-gray-50 rounded-l-lg">
@@ -19,10 +19,13 @@
                     </select>
                 </div>
                 <div class="border-b pb-4 border-gray-400 border-dashed pt-3 ">
-                    <p class="text-sm leading-10 leading-none text-gray-600 dark:text-gray-300">Indication des Codes couleurs</p>
-                    <span class="block text-sm leading-10 leading-none text-green-400 dark:text-gray-400">couleur vert => Client </span>
-                    <span class="block text-sm leading-10 leading-none text-blue-600 dark:text-gray-400">couleur bleu => Congée </span>
-                    <span class="block text-sm leading-10 leading-none text-red-600 dark:text-gray-400">couleur Rouge => Absence </span>
+                    <p class="text-sm leading-10 leading-none text-dark-500 dark:text-gray-300">Indication des Codes couleurs</p>
+                    <span class="block text-sm leading-10 leading-none text-green-500 dark:text-gray-400">couleur vert => Client </span>
+                    <span class="block text-sm leading-10 leading-none text-blue-500 dark:text-gray-400">couleur bleu => Congée </span>
+                    <span class="block text-sm leading-10 leading-none text-red-800 dark:text-gray-400">couleur Rouge => Absence </span>
+                    <span class="block text-sm leading-10 leading-none text-indigo-600 dark:text-gray-400">couleur violet => Intercontrat </span>
+                    <span class="block text-sm leading-10 leading-none text-orange-500 dark:text-gray-400">couleur orange => Maladie </span>
+                    <span class="block text-sm leading-10 leading-none text-gray-500 dark:text-gray-400">couleur gris => Weekend </span>
 
                     
                 </div>
@@ -43,8 +46,9 @@
               v-for="color in colors"
               :key="color"
               @click="selectColor(color)"
-              class="transition ease-in-out  w-5 h-5  rounded cursor-pointer focus:text-gray-400 hover:text-gray-400 text-gray-800 dark:text-gray-100 hover:-translate-y-1 hover:scale-110 duration-300"
+              class="transition ease-in-out w-5 h-5 rounded cursor-pointer focus:text-gray-400 hover:text-gray-400 text-gray-800 dark:text-gray-100 hover:-translate-y-1 hover:scale-110 duration-300"
               :style="{ backgroundColor: color }"
+              
             ></div>
             </div>
           </div>
@@ -126,33 +130,52 @@ const getCurrentDate = () => {
 const currentDate = ref(getCurrentDate());
 const checkedDays = ref({});
 const selectedColor = ref({});
-const colors = ["green", "blue", "red"];
+
+/* Color Signifation
+  #38a169 => bg-green-500 => clientéle
+  #4299e1 => bg-blue-500 => formation
+  #e53e3e => bg-red-500 => congé
+  #ED8936 => bg-orange-500 => maladie
+  #9F7AEA => bg-purple-500 => intercontrat
+  #6B7280 => bg-gray-500 => weekend
+
+*/
+const colors = ["#38a169", "#4299e1", "#e53e3e", "#9F7AEA", "#ED8936"];
+
 const colorCodes = {
-  green: "client",
-  blue: "congé",
-  red: "absence",
+  "#38a169": "clientéle",
+  "#4299e1": "Formation",
+  "#e53e3e": "Congé",
+  "#6B7280": "weekend",
+  "#9F7AEA": "intercontrat",
+  "#ED8936": "maladie",
 };
 
 const selectColor = (color) => {
   selectedColor.value = color;
+  console.log(color);
 };
+
 
 const toggleCheckbox = (day) => {
   if (checkedDays.value[day] === selectedColor.value) {
     checkedDays.value[day] = null;
   } else {
     checkedDays.value[day] = selectedColor.value;
+    console.log(selectedColor.value);
   }
 };
+
+
 
 const { year: currentYear, month: currentMonth, day: currentDay } = currentDate.value;
 
 
-const daysOfWeek = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+const daysOfWeek = ["lun", "mar", "mer", "jeu", "ven", "sam", "dim"];
 
 
 const generateCalendar = () => {
-  const firstDayOfMonth = new Date(currentYear, currentMonth - 1, 1).getDay();
+  const firstDayOfMonth = new Date(currentYear, currentMonth -1, 0).getDay();
   const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
   const weeks = [];
   let currentWeek = [];
@@ -230,7 +253,7 @@ const generatePdf = async () => {
   if (selectedClientName && selectedPartnerName) {
     const tableData = [];
 
-    
+    // Add logic to automatically mark Thursday and Saturday as "Weekend"
     weeks.value.forEach((week) => {
       week.forEach((day) => {
         if (day !== "") {
@@ -239,11 +262,17 @@ const generatePdf = async () => {
             const code = colorCodes[color];
             const formatedDate = `${day}/${getCurrentMonth()}/${currentYear}`;
             tableData.push({ Day: formatedDate, Code: code });
+          } else {
+            // Automatically mark Thursday and Saturday as "Weekend"
+            const dayOfWeek = new Date(currentYear, currentMonth - 1, day).getDay();
+            if (dayOfWeek === 6 || dayOfWeek === 0) { // Thursday is 4, Saturday is 6
+              const formatedDate = `${day}/${getCurrentMonth()}/${currentYear}`;
+              tableData.push({ Day: formatedDate, Code: "weekend" });
+            }
           }
         }
       });
     });
-
     doc.text(`Nom client: ${selectedClientName}`, 10, 10);
     doc.text(`Nom partener: ${selectedPartnerName}`, 10, 20);
 
@@ -258,15 +287,14 @@ const generatePdf = async () => {
   }
 };
 
+
 const getButtonClasses = (day) => {
+  const dayOfWeek = new Date(currentYear, currentMonth - 1, day).getDay();
   const backgroundColor = checkedDays.value[day];
   let classes = {
     'focus:outline-none': true,
     'focus:ring-2': true,
     'focus:ring-offset-2': true,
-    'focus:ring-indigo-700': false,
-    'focus:bg-indigo-500': false,
-    'hover:bg-indigo-500': false,
     'text-base': true,
     'w-6': true,
     'h-6': true,
@@ -277,22 +305,35 @@ const getButtonClasses = (day) => {
     'rounded-full': true,
   };
 
-  
-  switch (backgroundColor) {
-    case 'green':
-      classes['bg-green-500'] = true;
-      break;
-    case 'blue':
-      classes['bg-blue-500'] = true;
-      break;
-    case 'red':
-      classes['bg-red-500'] = true;
-      break;
+  if (dayOfWeek === 6 || dayOfWeek === 0) {
+    classes['bg-gray-500'] = true;
+  } else {
+    // Apply color based on selection for other days
+    switch (backgroundColor) {
+      case '#38a169':
+        classes['bg-green-500'] = true;
+        break;
+      case '#4299e1':
+        classes['bg-blue-500'] = true;
+        break;
+      case '#e53e3e':
+        classes['bg-red-500'] = true;
+        break;
+      case '#9F7AEA':
+        classes['bg-indigo-500'] = true;
+        break;
+      case '#ED8936':
+        classes['bg-orange-400'] = true;
+        break;
+
     default:
       classes[''] = true;
       break;
   }
 
+}
+
   return classes;
 };
+
 </script>
